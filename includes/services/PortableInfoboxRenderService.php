@@ -278,6 +278,21 @@ class PortableInfoboxRenderService {
 				if ( !empty( $data['label'] ) ) {
 					$horizontalGroupData['renderLabels'] = true;
 				}
+			} elseif ( $item['type'] === 'media' ) {
+				// Display only the first media element
+				$media = $data[0];
+
+				// Move caption out of $media so renderMedia does not render it
+				$caption = $media['caption'];
+				$media['caption'] = null;
+
+				$horizontalGroupData['data'][] = [
+					'label' => $caption,
+					'value' => $this->renderMedia( [ $media ] ),
+					'source' => $media['source'],
+					'item-name' => $media['item-name'],
+				];
+
 			} elseif ( $item['type'] === 'header' ) {
 				$horizontalGroupData['header'] = $data['value'];
 				$horizontalGroupData['inlineStyles'] = $this->inlineStyles;
